@@ -17,6 +17,12 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('auth')->group(function () {
 
     /**
+     * Login
+     */
+    Route::post(uri: '/login', action: [\App\Http\Controllers\AuthController::class, 'login'])
+        ->name(name: 'auth.login');
+
+    /**
      * Registration
      */
     Route::post(uri: '/register', action: [\App\Http\Controllers\AuthController::class, 'register'])
