@@ -13,6 +13,14 @@ class AuthController extends Controller
 
     }
 
+    public function login(LoginRequest $request)
+    {
+        $result = $this->service->login($request->validated());
+
+        return response()->json(...$result);
+    }
+
+
     public function register(RegisterRequest $request)
     {
         $result = $this->service->register($request->validated());
