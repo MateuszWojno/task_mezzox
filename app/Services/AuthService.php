@@ -8,6 +8,19 @@ use Illuminate\Support\Facades\Hash;
 class AuthService
 {
 
+    public function login(array $data)
+    {
+        if (!auth()->attempt($data)) return [['message' => 'Niepoprawne dane logowania'], 401];
+
+        $user = auth()->user();
+
+        $user->tokens()->delete();
+        $token = auth()->user()->createToken(sha1($user->id))->plainTextToken;
+
+        return [['token' => $token, 'token_type' => 'Bearer', 'message' => 'Witamy z powrotem do aplikacji'], 200];
+
+    }
+
     public function register(array $data)
     {
         try {
