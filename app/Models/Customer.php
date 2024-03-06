@@ -16,5 +16,9 @@ class Customer extends Model
 
     ];
 
+    public function borrowedBooks()
+    {
+        return $this->hasMany(Book::class);
+    }
 
 }
