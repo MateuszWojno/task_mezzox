@@ -37,6 +37,9 @@ Route::prefix('auth')->group(function () {
             ->name(name: 'customers.create')
             ->middleware(middleware: 'permission:customers.create');
 
+        Route::delete(uri: '/{id}', action: [\App\Http\Controllers\CustomerController::class, 'destroy'])
+            ->name(name: 'customers.destroy')
+            ->middleware(middleware: 'permission:customers.delete');
 
     });
 
