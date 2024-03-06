@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class AllPermissionsSeeder extends Seeder
@@ -15,6 +14,7 @@ class AllPermissionsSeeder extends Seeder
         $this->call([
             UserPermissionsSeeder::class,
             CustomersPermissionSeeder::class,
+            BooksPermissionSeeder::class,
         ]);
     }
 }
