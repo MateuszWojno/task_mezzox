@@ -46,6 +46,18 @@ Route::prefix('auth')->group(function () {
 
     });
 
+    /**
+     * Books
+     */
+
+    Route::prefix('books')->group(function () {
+
+        Route::get(uri: '/{id}', action: [\App\Http\Controllers\BookController::class, 'show'])
+            ->name(name: 'books.show')
+            ->middleware(middleware: 'permission:books.read');
+
+
+    });
 
 });
 
