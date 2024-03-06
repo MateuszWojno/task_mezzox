@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCustomerRequest;
+use App\Services\CustomerService;
 
 class CustomerController extends Controller
 {
