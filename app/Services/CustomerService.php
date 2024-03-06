@@ -24,4 +24,15 @@ class CustomerService
             ->toArray();
     }
 
+    public function destroy($id)
+    {
+        $deleted = $this->model->findOrFail($id);
+        $deleted->delete();
+
+        return fractal()
+            ->item($deleted, new CustomerTransformer())
+            ->toArray();
+    }
+
+
 }
