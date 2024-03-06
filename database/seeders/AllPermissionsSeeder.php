@@ -14,6 +14,7 @@ class AllPermissionsSeeder extends Seeder
     {
         $this->call([
             UserPermissionsSeeder::class,
+            CustomersPermissionSeeder::class,
         ]);
     }
 }
