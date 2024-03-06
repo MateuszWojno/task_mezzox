@@ -56,6 +56,10 @@ Route::prefix('auth')->group(function () {
             ->name(name: 'books.show')
             ->middleware(middleware: 'permission:books.read');
 
+        Route::get(uri: '/', action: [\App\Http\Controllers\BookController::class, 'index'])
+            ->name(name: 'books.index')
+            ->middleware(middleware: 'permission:books.read');
+
 
     });
 
