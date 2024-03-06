@@ -11,6 +11,14 @@ class BookController extends Controller
     {
     }
 
+    public function index()
+    {
+        $customers = $this->service->getList();
+
+        return response()->json($customers);
+
+    }
+
 
     public function show($id)
     {
