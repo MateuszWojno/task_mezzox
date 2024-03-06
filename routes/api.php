@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,6 +26,19 @@ Route::prefix('auth')->group(function () {
      */
     Route::post(uri: '/register', action: [\App\Http\Controllers\AuthController::class, 'register'])
         ->name(name: 'auth.register');
+
+
+    /**
+     * Customers
+     */
+
+    Route::prefix('customers')->group(function () {
+        Route::post(uri: '/', action: [\App\Http\Controllers\CustomerController::class, 'store'])
+            ->name(name: 'customers.create')
+            ->middleware(middleware: 'permission:customers.create');
+
+
+    });
 
 });
 
