@@ -11,6 +11,13 @@ class CustomerController extends Controller
     {
     }
 
+    public function index()
+    {
+        $customers = $this->service->getList();
+
+        return response()->json($customers);
+    }
+
 
     public function store(StoreCustomerRequest $request)
     {
@@ -31,7 +38,6 @@ class CustomerController extends Controller
             'message' => 'Customer has been deleted!'
         ]);
     }
-
 
 
 }
