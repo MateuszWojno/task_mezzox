@@ -31,6 +31,9 @@ Route::prefix('auth')->group(function () {
     /**
      * Customers
      */
+    Route::get('/', [\App\Http\Controllers\CustomerController::class, 'index'])
+        ->name('customers.index')
+        ->middleware(middleware: 'permission:customers.read');
 
     Route::prefix('customers')->group(function () {
         Route::post(uri: '/', action: [\App\Http\Controllers\CustomerController::class, 'store'])
@@ -42,6 +45,7 @@ Route::prefix('auth')->group(function () {
             ->middleware(middleware: 'permission:customers.delete');
 
     });
+
 
 });
 
