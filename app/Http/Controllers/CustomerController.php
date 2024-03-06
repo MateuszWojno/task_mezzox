@@ -23,5 +23,15 @@ class CustomerController extends Controller
         ]);
     }
 
+    public function destroy($id)
+    {
+        $result = $this->service->destroy($id);
+
+        return response()->json([
+            'message' => 'Customer has been deleted!'
+        ]);
+    }
+
+
 
 }
