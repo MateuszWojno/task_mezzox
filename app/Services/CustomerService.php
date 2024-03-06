@@ -11,6 +11,14 @@ class CustomerService
     {
     }
 
+    public function getList()
+    {
+        $customersList = $this->model::all();
+
+        return fractal()
+            ->collection($customersList, new CustomerTransformer())
+            ->toArray();
+    }
 
     public function create(array $attributes)
     {
