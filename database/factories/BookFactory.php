@@ -17,14 +17,16 @@ class BookFactory extends Factory
      */
     public function definition(): array
     {
+        $status = fake()->randomElement(['av', 'unav']);
+        $borrowerId = $status === 'unav' ? Customer::inRandomOrder()->first()->id : null;
+
         return [
             'title'            => fake()->title,
             'author'           => fake()->name,
             'publication_year' => fake()->date(1900, date('Y')),
             'publisher'        => fake()->name,
-            'status'           => fake()->randomElement(['av', 'unav']),
-            'borrower_id'      => Customer::inRandomOrder()->first(),
-
+            'status'           => $status,
+            'borrower_id'      => $borrowerId,
         ];
     }
 }
