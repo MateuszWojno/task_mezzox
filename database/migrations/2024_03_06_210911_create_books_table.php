@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->unsignedSmallInteger('publication_year');
             $table->string('publisher');
             $table->enum('status', ['av', 'unav'])->default('av');
-            $table->foreignId('borrower_id')->constrained('customers')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('borrower_id')->nullable()->constrained('customers')->cascadeOnDelete()->cascadeOnUpdate();
             $table->softDeletes();
             $table->timestamps();
         });
