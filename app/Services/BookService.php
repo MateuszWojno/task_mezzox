@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Models\Book;
 use App\Models\Book as BookModel;
+use App\Models\Customer;
 use App\Transformers\BookTransformer;
 
 class BookService
@@ -56,6 +58,23 @@ class BookService
         return fractal()
             ->item($customer, new BookTransformer())
             ->toArray()['data'];
+    }
+
+    public function borrowBook($customerId, $bookId)
+    {
+        $customer = Customer::findOrFail($customerId);
+        $book = Book::findOrFail($bookId);
+
+        if ($book->status === 'av') {
+            $book->status = 'unav';
+            $book->borrower_id = $customer->id;
+            $book->save();
+
+            return fractal()->item($book, new BookTransformer())->toArray();
+
+        } else {
+            return response()->json(['message' => 'Book is not available for borrowing']);
+        }
     }
 
 
