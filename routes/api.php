@@ -61,9 +61,10 @@ Route::prefix('auth')->group(function () {
             ->name(name: 'books.index')
             ->middleware(middleware: 'permission:books.read');
 
-        Route::post('/customers/{customerId}/borrow-book/{bookId}', [\App\Http\Controllers\CustomerController::class, 'borrowBook'])
+        Route::post('/customers/{customerId}/borrow-book/{bookId}', [\App\Http\Controllers\BookController::class, 'borrowBook'])
             ->name('customers.borrow-book')
             ->middleware(middleware: 'permission:books.read');
+
 
 
     });
