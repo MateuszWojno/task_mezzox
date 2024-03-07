@@ -77,5 +77,21 @@ class BookService
         }
     }
 
+    public function returnBook($customerId, $bookId)
+    {
+        $customer = Customer::findOrFail($customerId);
+        $book = Book::findOrFail($bookId);
+
+        if ($book->status === 'unav') {
+            $book->status = 'av';
+            $book->borrower_id = null;
+            $book->save();
+
+            return fractal()->item($book, new BookTransformer())->toArray();
+        } else {
+            return response()->json(['message' => 'This book is not borrowed by this customer'] );
+        }
+    }
+
 
 }
