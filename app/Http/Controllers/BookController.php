@@ -29,4 +29,11 @@ class BookController extends Controller
         ]);
 
     }
+
+    public function borrowBook($customerId, $bookId)
+    {
+        $borrowedBook = $this->service->borrowBook($customerId, $bookId);
+
+        return response()->json($borrowedBook);
+    }
 }
