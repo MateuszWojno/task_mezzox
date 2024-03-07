@@ -35,6 +35,7 @@ Route::prefix('auth')->group(function () {
         ->name('customers.index')
         ->middleware(middleware: 'permission:customers.read');
 
+
     Route::prefix('customers')->group(function () {
         Route::post(uri: '/', action: [\App\Http\Controllers\CustomerController::class, 'store'])
             ->name(name: 'customers.create')
@@ -58,6 +59,10 @@ Route::prefix('auth')->group(function () {
 
         Route::get(uri: '/', action: [\App\Http\Controllers\BookController::class, 'index'])
             ->name(name: 'books.index')
+            ->middleware(middleware: 'permission:books.read');
+
+        Route::post('/customers/{customerId}/borrow-book/{bookId}', [\App\Http\Controllers\CustomerController::class, 'borrowBook'])
+            ->name('customers.borrow-book')
             ->middleware(middleware: 'permission:books.read');
 
 

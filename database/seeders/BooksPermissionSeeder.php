@@ -3,8 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Permission;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 
 class BooksPermissionSeeder extends PermissionsBaseSeeder
 {
@@ -45,5 +43,21 @@ class BooksPermissionSeeder extends PermissionsBaseSeeder
             'description'  => 'Allow admin to search the book',
         ]);
         $this->setPermissions($this->all, $search);
+
+        $borrow = Permission::firstOrCreate([
+            'name' => 'books.borrow'
+        ], [
+            'display_name' => 'Borrow books',
+            'description'  => 'Allow admin to borrow the book',
+        ]);
+        $this->setPermissions($this->all, $borrow);
+
+        $return = Permission::firstOrCreate([
+            'name' => 'books.return'
+        ], [
+            'display_name' => 'Return books',
+            'description'  => 'Allow admin to return the book',
+        ]);
+        $this->setPermissions($this->all, $return);
     }
 }
