@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Book;
+use App\Models\Customer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -16,7 +17,8 @@ class BooksApiTest extends TestCase
     {
         parent::setUp();
 
-        $this->book = Book::factory(1)->create()[0];
+        $this->customer = Customer::factory()->create();
+        $this->book = Book::factory()->create();
 
         $this->createUsers();
 
@@ -67,6 +69,102 @@ class BooksApiTest extends TestCase
         $response->assertJsonStructure([
             'data'
         ]);
+    }
+
+    public function test_admin_can_borrow_book()
+    {
+        $this->book->update(['status' => 'av']);
+        $response = $this->actingAs($this->admin)->postJson(route('customers.borrow-book', ['customerId' => $this->customer->id, 'bookId' => $this->book->id]));
+
+        $response->assertOk();
+        $response->assertJsonStructure([
+            'data' => [
+                'title',
+                'author',
+                'publication_year',
+                'publisher',
+                'status',
+            ]
+        ]);
+        $response->assertJsonFragment([
+            'status' => 'unav',
+        ]);
+
+        $this->assertDatabaseHas('books', ['id' => $this->book->id, 'borrower_id' => $this->customer->id]);
+    }
+
+    public function test_user_can_borrow_book()
+    {
+        $this->book->update(['status' => 'av']);
+        $response = $this->actingAs($this->user)->postJson(route('customers.borrow-book', ['customerId' => $this->customer->id, 'bookId' => $this->book->id]));
+
+        $response->assertOk();
+        $response->assertJsonStructure([
+            'data' => [
+                'title',
+                'author',
+                'publication_year',
+                'publisher',
+                'status',
+            ]
+        ]);
+        $response->assertJsonFragment([
+            'status' => 'unav',
+        ]);
+
+        $this->assertDatabaseHas('books', ['id' => $this->book->id, 'borrower_id' => $this->customer->id]);
+    }
+
+    public function test_admin_can_return_book()
+    {
+
+        $this->book->borrower_id = $this->customer->id;
+        $this->book->update(['status' => 'unav']);
+        $this->book->save();
+
+        $response = $this->actingAs($this->admin)->postJson(route('customers.return-book', ['customerId' => $this->customer->id, 'bookId' => $this->book->id]));
+
+        $response->assertOk();
+        $response->assertJsonStructure([
+            'data' => [
+                'title',
+                'author',
+                'publication_year',
+                'publisher',
+                'status',
+            ]
+        ]);
+        $response->assertJsonFragment([
+            'status' => 'av',
+        ]);
+
+        $this->assertDatabaseHas('books', ['id' => $this->book->id, 'borrower_id' => null]);
+    }
+
+    public function test_user_can_return_book()
+    {
+
+        $this->book->borrower_id = $this->customer->id;
+        $this->book->update(['status' => 'unav']);
+        $this->book->save();
+
+        $response = $this->actingAs($this->user)->postJson(route('customers.return-book', ['customerId' => $this->customer->id, 'bookId' => $this->book->id]));
+
+        $response->assertOk();
+        $response->assertJsonStructure([
+            'data' => [
+                'title',
+                'author',
+                'publication_year',
+                'publisher',
+                'status',
+            ]
+        ]);
+        $response->assertJsonFragment([
+            'status' => 'av',
+        ]);
+
+        $this->assertDatabaseHas('books', ['id' => $this->book->id, 'borrower_id' => null]);
     }
 
 
