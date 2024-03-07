@@ -36,4 +36,11 @@ class BookController extends Controller
 
         return response()->json($borrowedBook);
     }
+
+    public function returnBook($customerId, $bookId)
+    {
+        $returnedBook = $this->service->returnBook($customerId, $bookId);
+
+        return response()->json($returnedBook);
+    }
 }
