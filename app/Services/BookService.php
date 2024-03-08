@@ -57,7 +57,23 @@ class BookService
     }
 
 
+    public function searchBook($search)
+    {
+        $books = Book::where('title', 'like', '%' . $search . '%')
+            ->orWhere('author', 'like', '%' . $search . '%')
+            ->orWhereHas('borrower_id', function ($query) use ($search) {
+                $query->where('first_name', 'like', '%' . $search . '%')
+                    ->orWhere('last_name', 'like', '%' . $search . '%');
+            })
+            ->paginate(20);
 
+
+        return fractal()
+            ->collection($books->items(), new BookTransformer())
+            ->paginateWith(new IlluminatePaginatorAdapter($books))
+            ->toArray();
+
+    }
 
 
 }
