@@ -67,12 +67,13 @@ Route::prefix('auth')->group(function () {
             ->name('customers.borrow-book')
             ->middleware(middleware: 'permission:books.read');
 
+        Route::post('/customers/{customerId}/return-book/{bookId}', [\App\Http\Controllers\BookController::class, 'returnBook'])
+            ->name('customers.return-book')
+            ->middleware(middleware: 'permission:books.read');
 
         Route::get('/{search}', [\App\Http\Controllers\BookController::class, 'searchBook'])
             ->name('books.search')
             ->middleware('permission:books.search');
-
-
 
 
     });
