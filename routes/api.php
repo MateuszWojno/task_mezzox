@@ -12,21 +12,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
-Route::prefix('auth')->group(function () {
-
-    /**
-     * Login
-     */
-    Route::post(uri: '/login', action: [\App\Http\Controllers\AuthController::class, 'login'])
-        ->name(name: 'auth.login');
-
-    /**
-     * Registration
-     */
-    Route::post(uri: '/register', action: [\App\Http\Controllers\AuthController::class, 'register'])
-        ->name(name: 'auth.register');
-
+Route::middleware(['auth:sanctum', 'role:admin|user'])->group(function () {
 
     /**
      * Customers
@@ -80,6 +66,22 @@ Route::prefix('auth')->group(function () {
 
 
     });
+
+});
+
+Route::prefix('auth')->group(function () {
+
+    /**
+     * Login
+     */
+    Route::post(uri: '/login', action: [\App\Http\Controllers\AuthController::class, 'login'])
+        ->name(name: 'auth.login');
+
+    /**
+     * Registration
+     */
+    Route::post(uri: '/register', action: [\App\Http\Controllers\AuthController::class, 'register'])
+        ->name(name: 'auth.register');
 
 });
 
