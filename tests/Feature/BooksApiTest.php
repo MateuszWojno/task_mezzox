@@ -168,4 +168,54 @@ class BooksApiTest extends TestCase
     }
 
 
+    public function test_that_admin_can_search_book_via_title()
+    {
+
+        $response = $this->actingAs($this->admin)->getJson(route('books.search', [
+            'search' => substr($this->book->title, 0, 3)
+        ]));
+
+        $this->assertTrue(
+            count($response->json()) > 0
+        );
+    }
+
+    public function test_that_user_can_search_book_via_title()
+    {
+
+        $response = $this->actingAs($this->user)->getJson(route('books.search', [
+            'search' => substr($this->book->title, 0, 3)
+        ]));
+
+        $this->assertTrue(
+            count($response->json()) > 0
+        );
+    }
+
+    public function test_that_admin_can_search_book_via_author()
+    {
+
+        $response = $this->actingAs($this->admin)->getJson(route('books.search', [
+            'search' => substr($this->book->author, 0, 3)
+        ]));
+
+        $this->assertTrue(
+            count($response->json()) > 0
+        );
+    }
+
+    public function test_that_user_can_search_book_via_author()
+    {
+
+        $response = $this->actingAs($this->admin)->getJson(route('books.search', [
+            'search' => substr($this->book->author, 0, 3)
+        ]));
+
+        $this->assertTrue(
+            count($response->json()) > 0
+        );
+    }
+
+
+
 }
