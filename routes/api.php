@@ -45,6 +45,9 @@ Route::prefix('auth')->group(function () {
             ->name(name: 'customers.destroy')
             ->middleware(middleware: 'permission:customers.delete');
 
+        Route::get('/{id}', [\App\Http\Controllers\CustomerController::class, 'show'])
+            ->name('customers.show')
+            ->middleware(middleware: 'permission:customers.read');
 
 
     });
