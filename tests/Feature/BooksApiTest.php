@@ -27,6 +27,11 @@ class BooksApiTest extends TestCase
 
     public function test_admin_can_see_book()
     {
+
+        $this->book->borrower_id = $this->customer->id;
+        $this->book->update(['status' => 'unav']);
+        $this->book->save();
+
         $response = $this->actingAs($this->admin)->getJson(route('books.show', ['id' => $this->book->id]));
         $response->assertOk();
         $response->assertJsonStructure([
@@ -46,10 +51,24 @@ class BooksApiTest extends TestCase
 
     public function test_user_can_see_book()
     {
+        $this->book->borrower_id = $this->customer->id;
+        $this->book->update(['status' => 'unav']);
+        $this->book->save();
+
         $response = $this->actingAs($this->user)->getJson(route('books.show', ['id' => $this->book->id]));
         $response->assertOk();
         $response->assertJsonStructure([
-            'data'
+            'data' => [
+                'title',
+                'author',
+                'publication_year',
+                'publisher',
+                'status',
+                'borrower' => [
+                    'first_name',
+                    'last_name'
+                ]
+            ]
         ]);
     }
 
