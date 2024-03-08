@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Book;
 use App\Models\Customer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -16,8 +17,8 @@ class CustomersApiTest extends TestCase
     {
         parent::setUp();
 
-        $this->customer = Customer::factory(1)->create()[0];
-
+        $this->customer = Customer::factory()->create();
+        $this->book = Book::factory()->create();
         $this->createUsers();
 
         $this->fakeData = [
@@ -186,6 +187,52 @@ class CustomersApiTest extends TestCase
                     'first_name',
                     'last_name',
 
+                ]
+            ]
+        ]);
+    }
+
+    public function test_admin_can_see_customer()
+    {
+        $this->book->borrower_id = $this->customer->id;
+        $this->book->update(['status' => 'unav']);
+        $this->book->save();
+
+        $response = $this->actingAs($this->admin)->getJson(route('customers.show', ['id' => $this->customer->id]));
+        $response->assertOk();
+        $response->assertJsonStructure([
+            'first_name',
+            'last_name',
+            'borrowed_books' => [
+                '*' => [
+                    'title',
+                    'author',
+                    'publication_year',
+                    'publisher',
+                    'status'
+                ]
+            ]
+        ]);
+    }
+
+    public function test_user_can_see_customer()
+    {
+        $this->book->borrower_id = $this->customer->id;
+        $this->book->update(['status' => 'unav']);
+        $this->book->save();
+
+        $response = $this->actingAs($this->user)->getJson(route('customers.show', ['id' => $this->customer->id]));
+        $response->assertOk();
+        $response->assertJsonStructure([
+            'first_name',
+            'last_name',
+            'borrowed_books' => [
+                '*' => [
+                    'title',
+                    'author',
+                    'publication_year',
+                    'publisher',
+                    'status'
                 ]
             ]
         ]);
