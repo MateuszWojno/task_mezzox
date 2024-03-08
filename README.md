@@ -1,3 +1,9 @@
+Used tools
+The application was developed using the Laravel 10 framework. MySQL database was used for data storage. The code was crafted in the PHPStorm editor. This application was built using Docker Compose, enabling easy deployment in isolated containers. Dockers are an ideal tool for managing the development environment without the need to configure a local setup. The software was developed using Test-Driven Development (TDD) methodology.
+
+Application Features
+The application is intended for library staff. It can be used by regular employees as well as administrators who have the highest privileges. Library employees can use the application to add customers and monitor the status of books, as well as track which customer has borrowed which book.
+
 API Endpoints
 
 GET api/customers - responsible for displaying customers, displaying the first name and last name of all customers
