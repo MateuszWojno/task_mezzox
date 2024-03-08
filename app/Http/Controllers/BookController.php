@@ -43,4 +43,13 @@ class BookController extends Controller
 
         return response()->json($returnedBook);
     }
+
+    public function searchBook($search)
+    {
+        $result = $this->service->searchBook($search);
+
+        return response()->json([
+            'data' => $result
+        ]);
+    }
 }
