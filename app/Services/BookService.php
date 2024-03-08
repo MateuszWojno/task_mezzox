@@ -14,6 +14,25 @@ class BookService
     {
     }
 
+    public function getList()
+    {
+        $booksList = $this->model::with('borrower')->paginate(20);
+
+        return fractal()
+            ->collection($booksList, function ($book) {
+                return [
+                    'id'       => $book->id,
+                    'title'    => $book->title,
+                    'author'   => $book->author,
+                    'borrower' => $book->borrower ? [
+                        'first_name' => $book->borrower->first_name,
+                        'last_name'  => $book->borrower->last_name
+                    ] : null
+                ];
+            })
+            ->toArray();
+    }
+
     public function getItem($id)
     {
         $customer = $this->model->findOrFail($id);
