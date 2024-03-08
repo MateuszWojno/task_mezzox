@@ -18,6 +18,12 @@ class CustomerController extends Controller
         return response()->json($customers);
     }
 
+    public function show($id)
+    {
+        $customerDetails = $this->service->getCustomerDetails($id);
+
+        return response()->json($customerDetails);
+    }
 
     public function store(StoreCustomerRequest $request)
     {
@@ -38,6 +44,4 @@ class CustomerController extends Controller
             'message' => 'Customer has been deleted!'
         ]);
     }
-
-
 }
