@@ -17,12 +17,13 @@ Route::middleware(['auth:sanctum', 'role:admin|user'])->group(function () {
     /**
      * Customers
      */
-    Route::get('/', [\App\Http\Controllers\CustomerController::class, 'index'])
-        ->name('customers.index')
-        ->middleware(middleware: 'permission:customers.read');
-
 
     Route::prefix('customers')->group(function () {
+
+        Route::get('/', [\App\Http\Controllers\CustomerController::class, 'index'])
+            ->name('customers.index')
+            ->middleware(middleware: 'permission:customers.read');
+
         Route::post(uri: '/', action: [\App\Http\Controllers\CustomerController::class, 'store'])
             ->name(name: 'customers.create')
             ->middleware(middleware: 'permission:customers.create');
